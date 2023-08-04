@@ -1,0 +1,187 @@
++*In[2]:*+
+[source, ipython3]
+----
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+----
+
+
++*In[3]:*+
+[source, ipython3]
+----
+df = pd.read_csv(r"C:\Users\user\Desktop\C10_loan1.csv")
+df
+----
+
+
++*Out[3]:*+
+----
+[cols=",,,,",options="header",]
+|===
+| |Home Owner |Marital Status |Annual Income |Defaulted Borrower
+|0 |Yes |Single |125 |No
+|1 |No |Married |100 |No
+|2 |No |Single |70 |No
+|3 |Yes |Married |120 |No
+|4 |No |Divorced |95 |Yes
+|5 |No |Married |60 |No
+|6 |Yes |Divorced |220 |No
+|7 |No |Single |85 |Yes
+|8 |No |Married |75 |No
+|9 |No |Single |90 |Yes
+|===
+----
+
+
++*In[5]:*+
+[source, ipython3]
+----
+df['Defaulted Borrower'].value_counts()
+----
+
+
++*Out[5]:*+
+----No     7
+Yes    3
+Name: Defaulted Borrower, dtype: int64----
+
+
++*In[6]:*+
+[source, ipython3]
+----
+x=df[['Annual Income','Annual Income']]
+y=df['Defaulted Borrower']
+----
+
+
++*In[8]:*+
+[source, ipython3]
+----
+g1={"'Defaulted Borrower'":{"Yes":1,"No":2}}
+df=df.replace(g1)
+df
+----
+
+
++*Out[8]:*+
+----
+[cols=",,,,",options="header",]
+|===
+| |Home Owner |Marital Status |Annual Income |Defaulted Borrower
+|0 |Yes |Single |125 |No
+|1 |No |Married |100 |No
+|2 |No |Single |70 |No
+|3 |Yes |Married |120 |No
+|4 |No |Divorced |95 |Yes
+|5 |No |Married |60 |No
+|6 |Yes |Divorced |220 |No
+|7 |No |Single |85 |Yes
+|8 |No |Married |75 |No
+|9 |No |Single |90 |Yes
+|===
+----
+
+
++*In[9]:*+
+[source, ipython3]
+----
+from sklearn.model_selection import train_test_split
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,train_size=0.70)
+----
+
+
++*In[10]:*+
+[source, ipython3]
+----
+from sklearn.ensemble import RandomForestClassifier
+
+rfc = RandomForestClassifier()
+rfc.fit(x_train,y_train)
+----
+
+
++*Out[10]:*+
+----RandomForestClassifier()----
+
+
++*In[11]:*+
+[source, ipython3]
+----
+parameters ={'max_depth':[1, 2, 3, 4,5],'min_samples_leaf':[5,10,15,20,25],
+             'n_estimators':[10,20,30,40,50]}
+----
+
+
++*In[12]:*+
+[source, ipython3]
+----
+from sklearn.model_selection import GridSearchCV
+
+grid_search =GridSearchCV(estimator=rfc,param_grid=parameters,cv=2,scoring="accuracy")
+grid_search.fit(x_train,y_train)
+----
+
+
++*Out[12]:*+
+----GridSearchCV(cv=2, estimator=RandomForestClassifier(),
+             param_grid={'max_depth': [1, 2, 3, 4, 5],
+                         'min_samples_leaf': [5, 10, 15, 20, 25],
+                         'n_estimators': [10, 20, 30, 40, 50]},
+             scoring='accuracy')----
+
+
++*In[13]:*+
+[source, ipython3]
+----
+grid_search.best_score_
+----
+
+
++*Out[13]:*+
+----0.5833333333333333----
+
+
++*In[14]:*+
+[source, ipython3]
+----
+rfc_best =grid_search.best_estimator_
+----
+
+
++*In[17]:*+
+[source, ipython3]
+----
+from sklearn.tree import plot_tree
+plt.figure(figsize=(89,40))
+plot_tree(rfc_best.estimators_[5], feature_names=x.columns, class_names=['Yes','No'], filled=True)
+----
+
+
++*Out[17]:*+
+----[Text(2483.1, 1087.2, 'gini = 0.49\nsamples = 5\nvalue = [3, 4]\nclass = No')]
+![png](output_11_1.png)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----

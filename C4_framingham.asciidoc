@@ -1,0 +1,465 @@
+﻿+*In[81]:*+
+[source, ipython3]
+----
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+----
+
+
++*In[82]:*+
+[source, ipython3]
+----
+df = pd.read_csv(r"C:\Users\user\Desktop\C4_framingham.csv")
+df
+----
+
+
++*Out[82]:*+
+----
+[cols=",,,,,,,,,,,,,,,,",options="header",]
+|===
+| |male |age |education |currentSmoker |cigsPerDay |BPMeds
+|prevalentStroke |prevalentHyp |diabetes |totChol |sysBP |diaBP |BMI
+|heartRate |glucose |TenYearCHD
+|0 |1 |39 |4.0 |0 |0.0 |0.0 |0 |0 |0 |195.0 |106.0 |70.0 |26.97 |80.0
+|77.0 |0
+
+|1 |0 |46 |2.0 |0 |0.0 |0.0 |0 |0 |0 |250.0 |121.0 |81.0 |28.73 |95.0
+|76.0 |0
+
+|2 |1 |48 |1.0 |1 |20.0 |0.0 |0 |0 |0 |245.0 |127.5 |80.0 |25.34 |75.0
+|70.0 |0
+
+|3 |0 |61 |3.0 |1 |30.0 |0.0 |0 |1 |0 |225.0 |150.0 |95.0 |28.58 |65.0
+|103.0 |1
+
+|4 |0 |46 |3.0 |1 |23.0 |0.0 |0 |0 |0 |285.0 |130.0 |84.0 |23.10 |85.0
+|85.0 |0
+
+|... |... |... |... |... |... |... |... |... |... |... |... |... |...
+|... |... |...
+
+|4233 |1 |50 |1.0 |1 |1.0 |0.0 |0 |1 |0 |313.0 |179.0 |92.0 |25.97 |66.0
+|86.0 |1
+
+|4234 |1 |51 |3.0 |1 |43.0 |0.0 |0 |0 |0 |207.0 |126.5 |80.0 |19.71
+|65.0 |68.0 |0
+
+|4235 |0 |48 |2.0 |1 |20.0 |NaN |0 |0 |0 |248.0 |131.0 |72.0 |22.00
+|84.0 |86.0 |0
+
+|4236 |0 |44 |1.0 |1 |15.0 |0.0 |0 |0 |0 |210.0 |126.5 |87.0 |19.16
+|86.0 |NaN |0
+
+|4237 |0 |52 |2.0 |0 |0.0 |0.0 |0 |0 |0 |269.0 |133.5 |83.0 |21.47 |80.0
+|107.0 |0
+|===
+
+4238 rows × 16 columns
+----
+
+
++*In[83]:*+
+[source, ipython3]
+----
+df.head()
+----
+
+
++*Out[83]:*+
+----
+[cols=",,,,,,,,,,,,,,,,",options="header",]
+|===
+| |male |age |education |currentSmoker |cigsPerDay |BPMeds
+|prevalentStroke |prevalentHyp |diabetes |totChol |sysBP |diaBP |BMI
+|heartRate |glucose |TenYearCHD
+|0 |1 |39 |4.0 |0 |0.0 |0.0 |0 |0 |0 |195.0 |106.0 |70.0 |26.97 |80.0
+|77.0 |0
+
+|1 |0 |46 |2.0 |0 |0.0 |0.0 |0 |0 |0 |250.0 |121.0 |81.0 |28.73 |95.0
+|76.0 |0
+
+|2 |1 |48 |1.0 |1 |20.0 |0.0 |0 |0 |0 |245.0 |127.5 |80.0 |25.34 |75.0
+|70.0 |0
+
+|3 |0 |61 |3.0 |1 |30.0 |0.0 |0 |1 |0 |225.0 |150.0 |95.0 |28.58 |65.0
+|103.0 |1
+
+|4 |0 |46 |3.0 |1 |23.0 |0.0 |0 |0 |0 |285.0 |130.0 |84.0 |23.10 |85.0
+|85.0 |0
+|===
+----
+
+
++*In[84]:*+
+[source, ipython3]
+----
+df.dropna(inplace=True)
+----
+
+
++*In[85]:*+
+[source, ipython3]
+----
+df.info()
+----
+
+
++*Out[85]:*+
+----
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 3656 entries, 0 to 4237
+Data columns (total 16 columns):
+ #   Column           Non-Null Count  Dtype  
+---  ------           --------------  -----  
+ 0   male             3656 non-null   int64  
+ 1   age              3656 non-null   int64  
+ 2   education        3656 non-null   float64
+ 3   currentSmoker    3656 non-null   int64  
+ 4   cigsPerDay       3656 non-null   float64
+ 5   BPMeds           3656 non-null   float64
+ 6   prevalentStroke  3656 non-null   int64  
+ 7   prevalentHyp     3656 non-null   int64  
+ 8   diabetes         3656 non-null   int64  
+ 9   totChol          3656 non-null   float64
+ 10  sysBP            3656 non-null   float64
+ 11  diaBP            3656 non-null   float64
+ 12  BMI              3656 non-null   float64
+ 13  heartRate        3656 non-null   float64
+ 14  glucose          3656 non-null   float64
+ 15  TenYearCHD       3656 non-null   int64  
+dtypes: float64(9), int64(7)
+memory usage: 485.6 KB
+----
+
+
++*In[86]:*+
+[source, ipython3]
+----
+df.columns
+----
+
+
++*Out[86]:*+
+----Index(['male', 'age', 'education', 'currentSmoker', 'cigsPerDay', 'BPMeds',
+       'prevalentStroke', 'prevalentHyp', 'diabetes', 'totChol', 'sysBP',
+       'diaBP', 'BMI', 'heartRate', 'glucose', 'TenYearCHD'],
+      dtype='object')----
+
+
++*In[87]:*+
+[source, ipython3]
+----
+feature_matrix=df[['male', 'age', 'education', 'currentSmoker', 'cigsPerDay', 'BPMeds',
+       'prevalentStroke', 'prevalentHyp', 'diabetes', 'totChol', 'sysBP',
+       'diaBP', 'BMI', 'heartRate', 'glucose', 'TenYearCHD']]
+target_vector =df['TenYearCHD']
+----
+
+
++*In[89]:*+
+[source, ipython3]
+----
+feature_matrix.shape
+----
+
+
++*Out[89]:*+
+----(3656, 16)----
+
+
++*In[90]:*+
+[source, ipython3]
+----
+target_vector.shape
+----
+
+
++*Out[90]:*+
+----(3656,)----
+
+
++*In[93]:*+
+[source, ipython3]
+----
+from sklearn.preprocessing import StandardScaler
+----
+
+
++*In[96]:*+
+[source, ipython3]
+----
+fs = StandardScaler().fit_transform(feature_matrix)
+----
+
+
++*In[97]:*+
+[source, ipython3]
+----
+logr = LogisticRegression()
+logr.fit(fs,target_vector)
+----
+
+
++*Out[97]:*+
+----LogisticRegression()----
+
+
++*In[99]:*+
+[source, ipython3]
+----
+observation=df[['male', 'age', 'education', 'currentSmoker', 'cigsPerDay', 'BPMeds',
+       'prevalentStroke', 'prevalentHyp', 'diabetes', 'totChol', 'sysBP',
+       'diaBP', 'BMI', 'heartRate', 'glucose', 'TenYearCHD']]
+----
+
+
++*In[100]:*+
+[source, ipython3]
+----
+prediction = logr.predict(observation)
+prediction
+----
+
+
++*Out[100]:*+
+----array([1, 1, 1, ..., 1, 1, 1], dtype=int64)----
+
+
++*In[101]:*+
+[source, ipython3]
+----
+logr.classes_
+----
+
+
++*Out[101]:*+
+----array([0, 1], dtype=int64)----
+
+
++*In[102]:*+
+[source, ipython3]
+----
+logr.predict_proba(observation)[0][1]
+----
+
+
++*Out[102]:*+
+----0.9999999999997466----
+
+
++*In[104]:*+
+[source, ipython3]
+----
+df['TenYearCHD'].value_counts()
+----
+
+
++*Out[104]:*+
+----0    3099
+1     557
+Name: TenYearCHD, dtype: int64----
+
+
++*In[105]:*+
+[source, ipython3]
+----
+x=df.drop('TenYearCHD',axis=1)
+y=df['TenYearCHD']
+----
+
+
++*In[106]:*+
+[source, ipython3]
+----
+g1={'TenYearCHD':{"0":1,"1":2}}
+df=df.replace(g1)
+df
+----
+
+
++*Out[106]:*+
+----
+[cols=",,,,,,,,,,,,,,,,",options="header",]
+|===
+| |male |age |education |currentSmoker |cigsPerDay |BPMeds
+|prevalentStroke |prevalentHyp |diabetes |totChol |sysBP |diaBP |BMI
+|heartRate |glucose |TenYearCHD
+|0 |1 |39 |4.0 |0 |0.0 |0.0 |0 |0 |0 |195.0 |106.0 |70.0 |26.97 |80.0
+|77.0 |0
+
+|1 |0 |46 |2.0 |0 |0.0 |0.0 |0 |0 |0 |250.0 |121.0 |81.0 |28.73 |95.0
+|76.0 |0
+
+|2 |1 |48 |1.0 |1 |20.0 |0.0 |0 |0 |0 |245.0 |127.5 |80.0 |25.34 |75.0
+|70.0 |0
+
+|3 |0 |61 |3.0 |1 |30.0 |0.0 |0 |1 |0 |225.0 |150.0 |95.0 |28.58 |65.0
+|103.0 |1
+
+|4 |0 |46 |3.0 |1 |23.0 |0.0 |0 |0 |0 |285.0 |130.0 |84.0 |23.10 |85.0
+|85.0 |0
+
+|... |... |... |... |... |... |... |... |... |... |... |... |... |...
+|... |... |...
+
+|4231 |1 |58 |3.0 |0 |0.0 |0.0 |0 |1 |0 |187.0 |141.0 |81.0 |24.96 |80.0
+|81.0 |0
+
+|4232 |1 |68 |1.0 |0 |0.0 |0.0 |0 |1 |0 |176.0 |168.0 |97.0 |23.14 |60.0
+|79.0 |1
+
+|4233 |1 |50 |1.0 |1 |1.0 |0.0 |0 |1 |0 |313.0 |179.0 |92.0 |25.97 |66.0
+|86.0 |1
+
+|4234 |1 |51 |3.0 |1 |43.0 |0.0 |0 |0 |0 |207.0 |126.5 |80.0 |19.71
+|65.0 |68.0 |0
+
+|4237 |0 |52 |2.0 |0 |0.0 |0.0 |0 |0 |0 |269.0 |133.5 |83.0 |21.47 |80.0
+|107.0 |0
+|===
+
+3656 rows × 16 columns
+----
+
+
++*In[107]:*+
+[source, ipython3]
+----
+from sklearn.model_selection import train_test_split
+
+x_train,x_test,y_train,y_test =train_test_split(x,y,test_size=0.3)
+----
+
+
++*In[108]:*+
+[source, ipython3]
+----
+from sklearn.ensemble import RandomForestClassifier
+
+rfc = RandomForestClassifier()
+rfc.fit(x_train,y_train)
+----
+
+
++*Out[108]:*+
+----RandomForestClassifier()----
+
+
++*In[109]:*+
+[source, ipython3]
+----
+parameters ={'max_depth':[1, 2, 3, 4,5],'min_samples_leaf':[5,10,15,20,25],
+             'n_estimators':[10,20,30,40,50]}
+----
+
+
++*In[110]:*+
+[source, ipython3]
+----
+from sklearn.model_selection import GridSearchCV
+
+grid_search =GridSearchCV(estimator=rfc,param_grid=parameters,cv=7,scoring="accuracy")
+grid_search.fit(x_train,y_train)
+----
+
+
++*Out[110]:*+
+----GridSearchCV(cv=7, estimator=RandomForestClassifier(),
+             param_grid={'max_depth': [1, 2, 3, 4, 5],
+                         'min_samples_leaf': [5, 10, 15, 20, 25],
+                         'n_estimators': [10, 20, 30, 40, 50]},
+             scoring='accuracy')----
+
+
++*In[111]:*+
+[source, ipython3]
+----
+grid_search.best_score_
+----
+
+
++*Out[111]:*+
+----0.8421289018639121----
+
+
++*In[112]:*+
+[source, ipython3]
+----
+rfc_best =grid_search.best_estimator_
+----
+
+
++*In[116]:*+
+[source, ipython3]
+----
+from sklearn.tree import plot_tree
+plt.figure(figsize=(89,40))
+plot_tree(rfc_best.estimators_[5], feature_names=x.columns, class_names=['Yes','No'], filled=True)
+----
+
+
++*Out[116]:*+
+----[Text(2496.895, 1993.2, 'totChol <= 262.5\ngini = 0.266\nsamples = 1628\nvalue = [2154, 405]\nclass = Yes'),
+ Text(1241.55, 1630.8000000000002, 'age <= 58.5\ngini = 0.232\nsamples = 1223\nvalue = [1679, 260]\nclass = Yes'),
+ Text(717.34, 1268.4, 'sysBP <= 166.5\ngini = 0.176\nsamples = 1019\nvalue = [1457, 157]\nclass = Yes'),
+ Text(441.44, 906.0, 'BMI <= 24.005\ngini = 0.159\nsamples = 981\nvalue = [1419, 135]\nclass = Yes'),
+ Text(220.72, 543.5999999999999, 'diaBP <= 97.75\ngini = 0.102\nsamples = 399\nvalue = [595, 34]\nclass = Yes'),
+ Text(110.36, 181.19999999999982, 'gini = 0.093\nsamples = 386\nvalue = [582, 30]\nclass = Yes'),
+ Text(331.08, 181.19999999999982, 'gini = 0.36\nsamples = 13\nvalue = [13, 4]\nclass = Yes'),
+ Text(662.16, 543.5999999999999, 'glucose <= 127.0\ngini = 0.195\nsamples = 582\nvalue = [824, 101]\nclass = Yes'),
+ Text(551.8, 181.19999999999982, 'gini = 0.185\nsamples = 572\nvalue = [815, 94]\nclass = Yes'),
+ Text(772.52, 181.19999999999982, 'gini = 0.492\nsamples = 10\nvalue = [9, 7]\nclass = Yes'),
+ Text(993.24, 906.0, 'heartRate <= 84.0\ngini = 0.464\nsamples = 38\nvalue = [38, 22]\nclass = Yes'),
+ Text(882.88, 543.5999999999999, 'gini = 0.497\nsamples = 24\nvalue = [21, 18]\nclass = Yes'),
+ Text(1103.6, 543.5999999999999, 'gini = 0.308\nsamples = 14\nvalue = [17, 4]\nclass = Yes'),
+ Text(1765.76, 1268.4, 'cigsPerDay <= 9.5\ngini = 0.433\nsamples = 204\nvalue = [222, 103]\nclass = Yes'),
+ Text(1434.68, 906.0, 'age <= 59.5\ngini = 0.358\nsamples = 144\nvalue = [174, 53]\nclass = Yes'),
+ Text(1324.32, 543.5999999999999, 'gini = 0.477\nsamples = 15\nvalue = [17, 11]\nclass = Yes'),
+ Text(1545.04, 543.5999999999999, 'sysBP <= 144.5\ngini = 0.333\nsamples = 129\nvalue = [157, 42]\nclass = Yes'),
+ Text(1434.68, 181.19999999999982, 'gini = 0.225\nsamples = 71\nvalue = [101, 15]\nclass = Yes'),
+ Text(1655.4, 181.19999999999982, 'gini = 0.439\nsamples = 58\nvalue = [56, 27]\nclass = Yes'),
+ Text(2096.84, 906.0, 'BMI <= 27.775\ngini = 0.5\nsamples = 60\nvalue = [48, 50]\nclass = No'),
+ Text(1986.48, 543.5999999999999, 'BMI <= 26.195\ngini = 0.496\nsamples = 46\nvalue = [42, 35]\nclass = Yes'),
+ Text(1876.12, 181.19999999999982, 'gini = 0.498\nsamples = 36\nvalue = [27, 31]\nclass = No'),
+ Text(2096.84, 181.19999999999982, 'gini = 0.332\nsamples = 10\nvalue = [15, 4]\nclass = Yes'),
+ Text(2207.2, 543.5999999999999, 'gini = 0.408\nsamples = 14\nvalue = [6, 15]\nclass = No'),
+ Text(3752.24, 1630.8000000000002, 'age <= 57.5\ngini = 0.358\nsamples = 405\nvalue = [475, 145]\nclass = Yes'),
+ Text(3090.08, 1268.4, 'sysBP <= 137.75\ngini = 0.276\nsamples = 277\nvalue = [354, 70]\nclass = Yes'),
+ Text(2648.64, 906.0, 'currentSmoker <= 0.5\ngini = 0.203\nsamples = 173\nvalue = [247, 32]\nclass = Yes'),
+ Text(2427.92, 543.5999999999999, 'totChol <= 295.5\ngini = 0.12\nsamples = 68\nvalue = [102, 7]\nclass = Yes'),
+ Text(2317.56, 181.19999999999982, 'gini = 0.05\nsamples = 49\nvalue = [76, 2]\nclass = Yes'),
+ Text(2538.28, 181.19999999999982, 'gini = 0.271\nsamples = 19\nvalue = [26, 5]\nclass = Yes'),
+ Text(2869.36, 543.5999999999999, 'sysBP <= 132.75\ngini = 0.251\nsamples = 105\nvalue = [145, 25]\nclass = Yes'),
+ Text(2759.0, 181.19999999999982, 'gini = 0.275\nsamples = 90\nvalue = [127, 25]\nclass = Yes'),
+ Text(2979.72, 181.19999999999982, 'gini = 0.0\nsamples = 15\nvalue = [18, 0]\nclass = Yes'),
+ Text(3531.52, 906.0, 'diaBP <= 97.25\ngini = 0.387\nsamples = 104\nvalue = [107, 38]\nclass = Yes'),
+ Text(3310.8, 543.5999999999999, 'glucose <= 71.5\ngini = 0.344\nsamples = 68\nvalue = [74, 21]\nclass = Yes'),
+ Text(3200.44, 181.19999999999982, 'gini = 0.091\nsamples = 18\nvalue = [20, 1]\nclass = Yes'),
+ Text(3421.16, 181.19999999999982, 'gini = 0.394\nsamples = 50\nvalue = [54, 20]\nclass = Yes'),
+ Text(3752.24, 543.5999999999999, 'BMI <= 26.495\ngini = 0.449\nsamples = 36\nvalue = [33, 17]\nclass = Yes'),
+ Text(3641.88, 181.19999999999982, 'gini = 0.408\nsamples = 12\nvalue = [4, 10]\nclass = No'),
+ Text(3862.6, 181.19999999999982, 'gini = 0.313\nsamples = 24\nvalue = [29, 7]\nclass = Yes'),
+ Text(4414.4, 1268.4, 'sysBP <= 145.5\ngini = 0.472\nsamples = 128\nvalue = [121, 75]\nclass = Yes'),
+ Text(4083.32, 906.0, 'diaBP <= 73.75\ngini = 0.347\nsamples = 71\nvalue = [80, 23]\nclass = Yes'),
+ Text(3972.96, 543.5999999999999, 'gini = 0.5\nsamples = 14\nvalue = [10, 10]\nclass = Yes'),
+ Text(4193.68, 543.5999999999999, 'BMI <= 26.41\ngini = 0.264\nsamples = 57\nvalue = [70, 13]\nclass = Yes'),
+ Text(4083.32, 181.19999999999982, 'gini = 0.32\nsamples = 37\nvalue = [44, 11]\nclass = Yes'),
+ Text(4304.04, 181.19999999999982, 'gini = 0.133\nsamples = 20\nvalue = [26, 2]\nclass = Yes'),
+ Text(4745.48, 906.0, 'age <= 63.5\ngini = 0.493\nsamples = 57\nvalue = [41, 52]\nclass = No'),
+ Text(4635.12, 543.5999999999999, 'glucose <= 78.5\ngini = 0.476\nsamples = 39\nvalue = [25, 39]\nclass = No'),
+ Text(4524.76, 181.19999999999982, 'gini = 0.461\nsamples = 16\nvalue = [16, 9]\nclass = Yes'),
+ Text(4745.48, 181.19999999999982, 'gini = 0.355\nsamples = 23\nvalue = [9, 30]\nclass = No'),
+ Text(4855.84, 543.5999999999999, 'gini = 0.495\nsamples = 18\nvalue = [16, 13]\nclass = Yes')]
+![png](output_25_1.png)
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
